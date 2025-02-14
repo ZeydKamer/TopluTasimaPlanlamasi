@@ -3,39 +3,31 @@ import java.util.Arrays;
 public class TopluTasimaPlanlamasi {
 
     public static void main(String[] args) {
-        // Kriterler: Nüfus Yoğunluğu, Ulaşım Altyapısı, Maliyet, Çevresel Etki, Sosyal Fayda
         int kriterSayisi = 5;
         int mahalleSayisi = 3;
 
-        // Mahallelerin kriter puanları (sentetik veriler)
         double[][] mahallePuanlari = {
             {8, 6, 7, 9, 8}, // Mahalle 1
             {7, 8, 6, 7, 9}, // Mahalle 2
             {9, 7, 8, 6, 7}  // Mahalle 3
         };
 
-        // Kriter ağırlıkları (sentetik veriler)
         double[] kriterAgirliklari = {0.3, 0.2, 0.2, 0.15, 0.15};
 
-        // Softmax ile her mahalle için toplam puan hesapla
         double[] softmaxSonuclari = softmaxHesapla(mahallePuanlari, kriterAgirliklari, mahalleSayisi, kriterSayisi);
 
-        // Sonuçları yazdır
         System.out.println("Mahallelerin Softmax Puanları:");
         for (int i = 0; i < mahalleSayisi; i++) {
             System.out.printf("Mahalle %d: %.4f\n", i + 1, softmaxSonuclari[i]);
         }
 
-        // En uygun mahalleyi seç
         int enUygunMahalle = enUygunMahalleyiSec(softmaxSonuclari);
         System.out.printf("\nEn uygun güzergah için seçilen mahalle: Mahalle %d\n", enUygunMahalle + 1);
     }
 
-    // Softmax hesaplama fonksiyonu
     private static double[] softmaxHesapla(double[][] mahallePuanlari, double[] kriterAgirliklari, int mahalleSayisi, int kriterSayisi) {
         double[] toplamPuanlar = new double[mahalleSayisi];
 
-        // Her mahalle için ağırlıklı puan hesapla
         for (int i = 0; i < mahalleSayisi; i++) {
             double toplam = 0;
             for (int j = 0; j < kriterSayisi; j++) {
@@ -44,7 +36,6 @@ public class TopluTasimaPlanlamasi {
             toplamPuanlar[i] = toplam;
         }
 
-        // Softmax formülü uygula
         double[] softmaxSonuclari = new double[mahalleSayisi];
         double expToplam = 0;
         for (int i = 0; i < mahalleSayisi; i++) {
@@ -57,7 +48,6 @@ public class TopluTasimaPlanlamasi {
         return softmaxSonuclari;
     }
 
-    // En uygun mahalleyi seçme fonksiyonu
     private static int enUygunMahalleyiSec(double[] softmaxSonuclari) {
         int enUygunIndex = 0;
         double enYuksekPuan = softmaxSonuclari[0];
